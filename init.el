@@ -34,7 +34,10 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(rust
      python
-     javascript
+     (javascript :variables javascript-backend 'tern)
+     (tern :variables
+           tern-command
+           '("node" "/home/leocenturion/.nvm/versions/node/v14.19.1/bin/tern"))
      html
      yaml
      ;; ----------------------------------------------------------------
@@ -58,7 +61,8 @@ This function should only modify configuration layer settings."
      spell-checking
      syntax-checking
      version-control
-     treemacs)
+     treemacs
+     shell-scripts)
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -73,6 +77,7 @@ This function should only modify configuration layer settings."
    '(hackernews
      verb
      obsidian
+     pdf-tools
      )
 
    ;; A list of packages that cannot be updated.
@@ -555,6 +560,8 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (add-to-list 'exec-path "/home/leocenturion/.nvm/versions/node/v14.19.1/bin/node" t)
+  
 )
 
 
@@ -572,11 +579,13 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+
   (require 'obsidian)
   (obsidian-specify-path "~/Dropbox/DropsyncFiles/Obsidian/Main/joplin/")
   ;; If you want a different directory of `obsidian-capture':
-  ;; (setq obsidian-inbox-directory "gtd")
-
+  (setq obsidian-inbox-directory "gtd")
+  
   ;; Define obsidian-mode bindings
   (add-hook
    'obsidian-mode-hook
@@ -592,6 +601,10 @@ before packages are loaded."
   (global-obsidian-mode t)
 
   (global-set-key (kbd "C-c g") 'magit-file-dispatch)
+
+  (global-set-key (kbd "M-o") 'other-window)
+
+  (windmove-default-keybindings)
 )
 
 
@@ -610,7 +623,7 @@ This function is called at the very end of Spacemacs initialization."
  '(custom-safe-themes
    '("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default))
  '(package-selected-packages
-   '(obsidian elgrep verb hackernews cargo flycheck-rust racer ron-mode rust-mode toml-mode w3m blacken code-cells company-anaconda anaconda-mode cython-mode helm-cscope helm-pydoc importmagic epc ctable concurrent deferred live-py-mode lsp-pyright lsp-python-ms nose pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc stickyfunc-enhance xcscope yapfify counsel-gtags counsel swiper dap-mode lsp-docker lsp-treemacs bui lsp-mode ggtags helm-gtags import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode skewer-mode js2-mode tern company-web impatient-mode htmlize sass-mode add-node-modules-path web-completion-data ivy emmet-mode helm-css-scss simple-httpd prettier-js pug-mode haml-mode scss-mode slim-mode tagedit web-beautify web-mode yaml-mode ac-ispell auto-complete auto-dictionary auto-yasnippet browse-at-remote flycheck-pos-tip pos-tip flyspell-correct-helm flyspell-correct forge yaml ghub closql emacsql-sqlite emacsql treepy fuzzy gh-md git-gutter-fringe fringe-helper git-gutter git-link git-messenger git-modes git-timemachine gitignore-templates helm-c-yasnippet helm-company company helm-git-grep helm-ls-git markdown-toc markdown-mode mmm-mode mwim smeargle treemacs-magit magit magit-section git-commit with-editor transient unfill yasnippet-snippets yasnippet ace-jump-helm-line ace-link aggressive-indent auto-compile packed auto-highlight-symbol centered-cursor-mode clean-aindent-mode column-enforce-mode define-word devdocs dired-quick-sort drag-stuff dumb-jump editorconfig elisp-def elisp-slime-nav emr clang-format list-utils eval-sexp-fu evil-anzu anzu evil-args evil-cleverparens paredit evil-collection annalist evil-ediff evil-escape evil-exchange evil-goggles evil-iedit-state iedit evil-indent-plus evil-lion evil-lisp-state evil-matchit evil-mc evil-nerd-commenter evil-numbers evil-surround evil-textobj-line evil-tutor evil-unimpaired evil-visual-mark-mode evil-visualstar expand-region eyebrowse fancy-battery flx-ido flycheck-elsa flycheck-package package-lint flycheck golden-ratio google-translate helm-ag helm-descbinds helm-flx flx helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm helm-core help-fns+ hide-comnt highlight-indentation highlight-numbers parent-mode highlight-parentheses hl-todo compat hungry-delete indent-guide info+ inspector link-hint lorem-ipsum macrostep multi-line shut-up nameless open-junk-file org-superstar overseer f pkg-info epl paradox spinner password-generator popup popwin quickrun rainbow-delimiters request restart-emacs smartparens space-doc spaceline-all-the-icons memoize spaceline all-the-icons powerline spacemacs-purpose-popwin spacemacs-whitespace-cleanup string-edit string-inflection symbol-overlay symon term-cursor toc-org treemacs-icons-dired treemacs-persp persp-mode treemacs-projectile treemacs projectile cfrs ht pfuture ace-window avy posframe s undo-tree queue uuidgen vi-tilde-fringe vim-powerline volatile-highlights window-purpose imenu-list winum dash writeroom-mode visual-fill-column ws-butler async bind-map diminish dotenv-mode evil-evilified-state font-lock+ holy-mode hybrid-mode evil goto-chg hydra lv pcre2el use-package bind-key which-key)))
+   '(company-shell fish-mode flycheck-bashate insert-shebang shfmt reformatter pdf-tools tablist obsidian elgrep verb hackernews cargo flycheck-rust racer ron-mode rust-mode toml-mode w3m blacken code-cells company-anaconda anaconda-mode cython-mode helm-cscope helm-pydoc importmagic epc ctable concurrent deferred live-py-mode lsp-pyright lsp-python-ms nose pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc stickyfunc-enhance xcscope yapfify counsel-gtags counsel swiper dap-mode lsp-docker lsp-treemacs bui lsp-mode ggtags helm-gtags import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode skewer-mode js2-mode tern company-web impatient-mode htmlize sass-mode add-node-modules-path web-completion-data ivy emmet-mode helm-css-scss simple-httpd prettier-js pug-mode haml-mode scss-mode slim-mode tagedit web-beautify web-mode yaml-mode ac-ispell auto-complete auto-dictionary auto-yasnippet browse-at-remote flycheck-pos-tip pos-tip flyspell-correct-helm flyspell-correct forge yaml ghub closql emacsql-sqlite emacsql treepy fuzzy gh-md git-gutter-fringe fringe-helper git-gutter git-link git-messenger git-modes git-timemachine gitignore-templates helm-c-yasnippet helm-company company helm-git-grep helm-ls-git markdown-toc markdown-mode mmm-mode mwim smeargle treemacs-magit magit magit-section git-commit with-editor transient unfill yasnippet-snippets yasnippet ace-jump-helm-line ace-link aggressive-indent auto-compile packed auto-highlight-symbol centered-cursor-mode clean-aindent-mode column-enforce-mode define-word devdocs dired-quick-sort drag-stuff dumb-jump editorconfig elisp-def elisp-slime-nav emr clang-format list-utils eval-sexp-fu evil-anzu anzu evil-args evil-cleverparens paredit evil-collection annalist evil-ediff evil-escape evil-exchange evil-goggles evil-iedit-state iedit evil-indent-plus evil-lion evil-lisp-state evil-matchit evil-mc evil-nerd-commenter evil-numbers evil-surround evil-textobj-line evil-tutor evil-unimpaired evil-visual-mark-mode evil-visualstar expand-region eyebrowse fancy-battery flx-ido flycheck-elsa flycheck-package package-lint flycheck golden-ratio google-translate helm-ag helm-descbinds helm-flx flx helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm helm-core help-fns+ hide-comnt highlight-indentation highlight-numbers parent-mode highlight-parentheses hl-todo compat hungry-delete indent-guide info+ inspector link-hint lorem-ipsum macrostep multi-line shut-up nameless open-junk-file org-superstar overseer f pkg-info epl paradox spinner password-generator popup popwin quickrun rainbow-delimiters request restart-emacs smartparens space-doc spaceline-all-the-icons memoize spaceline all-the-icons powerline spacemacs-purpose-popwin spacemacs-whitespace-cleanup string-edit string-inflection symbol-overlay symon term-cursor toc-org treemacs-icons-dired treemacs-persp persp-mode treemacs-projectile treemacs projectile cfrs ht pfuture ace-window avy posframe s undo-tree queue uuidgen vi-tilde-fringe vim-powerline volatile-highlights window-purpose imenu-list winum dash writeroom-mode visual-fill-column ws-butler async bind-map diminish dotenv-mode evil-evilified-state font-lock+ holy-mode hybrid-mode evil goto-chg hydra lv pcre2el use-package bind-key which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
